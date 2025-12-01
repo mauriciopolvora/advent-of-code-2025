@@ -1,18 +1,4 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-
-    List<String> l = readFileInList("src/input");
-
-    // Iterator iterating over List
-
-    for (String s : l) System.out.println(s);
-
-   parseDial(l);
-}
-
-public static List<String> readFileInList(String fileName)
-{
+public static List<String> readFileInList(String fileName) {
     // Created List of String
     List<String> lines = Collections.emptyList();
 
@@ -20,7 +6,7 @@ public static List<String> readFileInList(String fileName)
         lines = Files.readAllLines(
                 Paths.get(fileName),
                 StandardCharsets.UTF_8);
-    } catch(IOException e) {
+    } catch (IOException e) {
         e.printStackTrace();
     }
 
@@ -41,17 +27,18 @@ public static void parseDial(List<String> lines) {
     }
     System.out.println("Total passes of 0: " + totalPassesZero);
 }
+
 public static int[] runDial(int dial, String direction, int amount) {
     int passesZero = 0;
 
     if (direction.equals("L")) {
         for (int i = 1; i <= amount; i++) {
             dial = dial - 1;
-            if (dial == 0 ) {
+            if (dial == 0) {
                 passesZero++;
             }
-            if (dial < 0 ) {
-                    dial = 99;
+            if (dial < 0) {
+                dial = 99;
             }
         }
     } else {
@@ -65,6 +52,11 @@ public static int[] runDial(int dial, String direction, int amount) {
     }
     System.out.println(" to point at " + dial + ", passing 0 " + passesZero + " times.");
     return new int[]{dial, passesZero};
+}
+
+void main() {
+    List<String> l = readFileInList("src/input");
+    parseDial(l);
 }
 
 
