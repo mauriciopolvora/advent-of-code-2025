@@ -1,4 +1,3 @@
-
 public static String readFile(String fileName) {
     // Created List of String
     List<String> lines = Collections.emptyList();
@@ -31,7 +30,7 @@ public static void parseInputPart1(String input) {
 
             for (long i = Long.parseLong(firstPart); i <= Long.parseLong(secondPart); i++) {
                 String numberStr = Long.toString(i);
-                if (numberStr.length()%2 == 0) {
+                if (numberStr.length() % 2 == 0) {
                     String half1 = numberStr.substring(0, numberStr.length() / 2);
                     String half2 = numberStr.substring(numberStr.length() / 2);
                     if (half1.equals(half2)) {
@@ -50,23 +49,23 @@ public static void parseInputPart2(String input) {
     List<String> matchesFound = new ArrayList<>();
 
     for (String part : parts) {
-        System.out.println("Part: " + part);
+        //System.out.println("Part: " + part);
         int dashIndex = part.indexOf('-');
         if (dashIndex != -1) {
             String firstPart = part.substring(0, dashIndex).trim();
             String secondPart = part.substring(dashIndex + 1).trim();
 
-            System.out.println("  firstPart  = " + firstPart);
-            System.out.println("  secondPart = " + secondPart);
+            //System.out.println("  firstPart  = " + firstPart);
+            //System.out.println("  secondPart = " + secondPart);
 
             long start = Long.parseLong(firstPart);
             long endInclusive = Long.parseLong(secondPart);
 
             for (long currentNumber = start; currentNumber <= endInclusive; currentNumber++) {
                 String s = Long.toString(currentNumber);
-                System.out.println("Parsing: " + currentNumber);
+                //System.out.println("Parsing: " + currentNumber);
                 int maxChunkSize = s.length();
-                System.out.println("Max chunkSize = " + maxChunkSize);
+                //System.out.println("Max chunkSize = " + maxChunkSize);
 
                 // chunkSize from 1 up to maxChunkSize
                 for (int chunkSize = 1; chunkSize <= maxChunkSize; chunkSize++) {
@@ -74,12 +73,12 @@ public static void parseInputPart2(String input) {
                     List<String> chunkEntries = new ArrayList<>();
                     for (int i = 0; i + chunkSize <= s.length(); i += chunkSize) {
                         String chunk = s.substring(i, i + chunkSize);
-                        System.out.println("  chunk (size " + chunkSize + "): " + chunk);
+                        //System.out.println("  chunk (size " + chunkSize + "): " + chunk);
                         chunkEntries.add(chunk);
                     }
-                    System.out.println(chunkEntries);
+                    //System.out.println(chunkEntries);
                     if (allEqual(chunkEntries, chunkSize, s)) {
-                        System.out.println("Match found: " + s);
+                        //System.out.println("Match found: " + s);
                         if (!matchesFound.contains(s)) {
                             matchesFound.add(s);
                         }
@@ -119,6 +118,6 @@ void main() {
 
     long endTime = System.currentTimeMillis();
     long elapsedTime = endTime - startTime;
-    System.out.println("\n️  Execution time: " + elapsedTime + "ms (" + (elapsedTime / 1000.0) + "s)");
+    System.out.println("\n️Execution time: " + elapsedTime + "ms (" + (elapsedTime / 1000.0) + "s)");
 }
 
