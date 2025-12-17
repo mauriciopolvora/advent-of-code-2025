@@ -73,6 +73,101 @@ public static long part1(MatrixResult result) {
     return sum;
 }
 
+public static long part2(List<String> lines) {
+    // Get the operator line (last line)
+    String operatorLine = lines.get(lines.size() - 1);
+
+    // Find max width across all lines
+    int maxWidth = 0;
+    for (String line : lines) {
+        maxWidth = Math.max(maxWidth, line.length());
+    }
+
+    // Pad all lines to same width
+    String[] paddedLines = new String[lines.size()];
+    for (int i = 0; i < lines.size(); i++) {
+        String line = lines.get(i);
+        if (line.length() < maxWidth) {
+            paddedLines[i] = line + " ".repeat(maxWidth - line.length());
+        } else {
+            paddedLines[i] = line;
+        }
+    }
+
+    long grandTotal = 0;
+
+    // Process columns from right to left
+    int col = maxWidth - 1;
+    while (col >= 0) {
+        // Skip space-only columns (problem separators)
+        while (col >= 0 && isSpaceColumn(paddedLines, col)) {
+            col--;
+        }
+        if (col < 0) break;
+
+        // Find the start of this problem (go left until we hit a space-only column)
+        int endCol = col;
+        while (col >= 0 && !isSpaceColumn(paddedLines, col)) {
+            col--;
+        }
+        int startCol = col + 1;
+
+        // Get the operator for this problem (from the last row)
+        char operator = ' ';
+        for (int c = startCol; c <= endCol; c++) {
+            char ch = paddedLines[paddedLines.length - 1].charAt(c);
+            if (ch == '*' || ch == '+') {
+                operator = ch;
+                break;
+            }
+        }
+
+        // Read columns from right to left within this problem
+        // Each column forms a number (top to bottom = most significant to least significant)
+        List<Long> numbers = new ArrayList<>();
+        for (int c = endCol; c >= startCol; c--) {
+            StringBuilder numStr = new StringBuilder();
+            // Read digits from top to bottom (excluding operator row)
+            for (int row = 0; row < paddedLines.length - 1; row++) {
+                char ch = paddedLines[row].charAt(c);
+                if (Character.isDigit(ch)) {
+                    numStr.append(ch);
+                }
+            }
+            if (numStr.length() > 0) {
+                numbers.add(Long.parseLong(numStr.toString()));
+            }
+        }
+
+        // Apply operation
+        long result = 0;
+        if (operator == '*') {
+            result = 1;
+            for (Long num : numbers) {
+                result *= num;
+            }
+        } else if (operator == '+') {
+            for (Long num : numbers) {
+                result += num;
+            }
+        }
+
+        grandTotal += result;
+    }
+
+    return grandTotal;
+}
+
+// Helper method to check if a column contains only spaces
+private static boolean isSpaceColumn(String[] lines, int col) {
+    for (String line : lines) {
+        if (col < line.length() && line.charAt(col) != ' ') {
+            return false;
+        }
+    }
+    return true;
+}
+
 void main() {
 
     List<String> lines = readFile("src/input");
@@ -80,5 +175,6 @@ void main() {
     MatrixResult matrix = parseMatrix(lines);
 
     System.out.println(part1(matrix));
+    System.out.println(part2(lines));
 
 }
